@@ -30,3 +30,9 @@
   color: skyblue;
   font-size: 9pt;
 }
+
+.tutorial {
+  font-size: 11pt;
+  color: gold;
+  padding-left: 10px;
+}

@@ -3,7 +3,7 @@ import Tooltip from 'react-bootstrap/cjs/Tooltip.js';
 
 import '../styles/Particle.css';
 
-export default function Particle({ size, temp, scheme }) {
+export default function Particle({ size, temp, scheme, selectParticle }) {
 
   // https://stackoverflow.com/questions/21977786/star-b-v-color-index-to-apparent-rgb-color/22630970#22630970
   function bv2rgb(bv) {
@@ -85,7 +85,7 @@ export default function Particle({ size, temp, scheme }) {
             Temp: {Math.round(temp * 100) / 100}
           </Tooltip>
         )}>
-      <div className="particle-container" style={{ height: size, width: size }}>
+      <div className="particle-container" style={{ height: size, width: size }} onClick={selectParticle}>
         <div className="particle" style={colorStyle}></div>
       </div>
     </OverlayTrigger>

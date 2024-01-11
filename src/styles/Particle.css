@@ -10,3 +10,12 @@
   width: 10px;
   background-color: blueviolet;
 }
+
+.test {
+  max-width: 200px;
+}
+
+.test :hover{
+  cursor: pointer !important;
+  /* z-index: 50000 !important; */
+}

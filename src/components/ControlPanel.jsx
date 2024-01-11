@@ -37,7 +37,7 @@ export default function ControlPanel({ setScheme, scheme, tickspeed, setTickspee
         </Row>
         <Row className="option">
           <Col >
-            Tickspeed
+            Tick Interval
           </Col>
           <Col xs={8}>
             <Form>
@@ -80,7 +80,7 @@ export default function ControlPanel({ setScheme, scheme, tickspeed, setTickspee
                   ref = {heatConstantInput}
                   onBlur={
                     (e) => {
-                      setHeatConstant(parseInt(e.target.value));
+                      setHeatConstant(e.target.value);
                       setHeatConstantCode(1);
                       let id;
                       id = setInterval(()=> {setHeatConstantCode(0); clearInterval(id)}, 2000);
@@ -104,6 +104,9 @@ export default function ControlPanel({ setScheme, scheme, tickspeed, setTickspee
               </Form.Group>
             </Form>
           </Col>
+        </Row>
+        <Row className="tutorial">
+          <Col><strong>Tutorial</strong>: Click on particle to set or fix temp.</Col>
         </Row>
 
       </Container>
