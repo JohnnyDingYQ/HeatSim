@@ -9,7 +9,7 @@ import '../styles/index.css';
 
 export default function MainContainer() {
 
-  const [scheme, setScheme] = useState(0);
+  const [scheme, setScheme] = useState(2);
   const [tickspeed, setTickspeed] = useState(1000);
   const [heatConstant, setHeatConstant] = useState(0.1);
 
