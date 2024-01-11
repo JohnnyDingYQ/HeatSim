@@ -68,7 +68,7 @@ export default function Particle({ size, temp, scheme }) {
       <div className="particle" style={{ backgroundColor: `rgb(${r}, ${g}, ${b})` }}></div>
     )
   } else if (scheme == 2) {
-    let h = temp/21*256;
+    let h = 256 - temp/21*256;
     particle = (
       <div className="particle" style={{ backgroundColor: `hsl(${h}, 100%, 50%)` }}></div>
     )
