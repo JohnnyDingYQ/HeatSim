@@ -1,7 +1,7 @@
 import OverlayTrigger from 'react-bootstrap/cjs/OverlayTrigger.js';
 import Tooltip from 'react-bootstrap/cjs/Tooltip.js';
 
-import '../styles/style.css';
+import '../styles/Particle.css';
 
 export default function Particle({ size, temp, scheme }) {
 
@@ -56,22 +56,23 @@ export default function Particle({ size, temp, scheme }) {
     return [r, g, b];
   }
 
-  let particle;
+  let colorStyle;
+
   if (scheme == 0) {
     let [r, g, b] = bv2rgb(-0.8667 + 0.1556 * temp);
-    particle = (
-      <div className="particle" style={{ backgroundColor: `rgb(${r}, ${g}, ${b})` }}></div>
-    )
+    colorStyle = {
+      backgroundColor: `rgb(${r}, ${g}, ${b})`
+    }
   } else if (scheme == 1) {
     let [r, g, b] = bv2rgb(2.867 - 0.1556 * temp);
-    particle = (
-      <div className="particle" style={{ backgroundColor: `rgb(${r}, ${g}, ${b})` }}></div>
-    )
+    colorStyle = {
+      backgroundColor: `rgb(${r}, ${g}, ${b})`
+    }
   } else if (scheme == 2) {
-    let h = 256 - temp/21*256;
-    particle = (
-      <div className="particle" style={{ backgroundColor: `hsl(${h}, 100%, 50%)` }}></div>
-    )
+    let h = 256 - temp / 21 * 256;
+    colorStyle = {
+      backgroundColor: `hsl(${h}, 100%, 50%)`
+    }
   }
 
   return (
@@ -85,7 +86,7 @@ export default function Particle({ size, temp, scheme }) {
           </Tooltip>
         )}>
       <div className="particle-container" style={{ height: size, width: size }}>
-        {particle}
+        <div className="particle" style={colorStyle}></div>
       </div>
     </OverlayTrigger>
   );

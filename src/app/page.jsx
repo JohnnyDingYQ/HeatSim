@@ -5,7 +5,7 @@ import { useState } from 'react';
 import ParticleGrid from "../components/ParticleGrid.jsx";
 import ControlPanel from "../components/ControlPanel.jsx";
 
-import '../styles/style.css';
+import '../styles/index.css';
 
 export default function MainContainer() {
 

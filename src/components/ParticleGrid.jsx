@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Particle from '../components/Particle.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import '../styles/style.css';
+import '../styles/ParticleGrid.css';
 
 
 export default function ParticleGrid(props) {

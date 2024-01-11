@@ -1,0 +1,32 @@
+.control-panel-container{
+  display: flex;
+  flex-shrink: 0;
+  background-color: blueviolet;
+  width: 350px;
+  border-right: 1px solid rgb(80, 80, 80);
+  background-color: rgb(50, 50, 50);
+}
+
+.title{
+  text-align: center;
+  color: white;
+  font-size: 20pt;
+  height: 80px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.option {
+  color: white;
+  font-size: 11pt;
+  text-align: center;
+}
+
+.option button {
+  min-width: 206px;
+}
+
+.option small {
+  color: skyblue;
+  font-size: 9pt;
+}
