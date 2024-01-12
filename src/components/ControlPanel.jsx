@@ -1,22 +1,43 @@
-import { Container, Col, Row, Dropdown, Form, Overlay, Tooltip } from "react-bootstrap"
+import { Container, Col, Row, Dropdown, Form, Overlay, Tooltip, Button } from "react-bootstrap"
 import { Transition } from 'react-transition-group';
 import { useRef, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import '../styles/ControlPanel.css';
 
-export default function ControlPanel({ setScheme, scheme, tickspeed, setTickspeed, heatConstant, setHeatConstant }) {
+export default function ControlPanel({ setScheme, scheme, tickspeed, setTickspeed, heatConstant, setHeatConstant, tempReducer }) {
 
   const tickSpeedInput = useRef(null);
   const heatConstantInput = useRef(null);
   const [tickTooltipCode, setTickTooltipCode] = useState(0);
   const [heatConstantCode, setHeatConstantCode] = useState(0);
 
+  const handleGradient = () => {
+    tempReducer({
+      type: 'preset-gradient'
+    });
+  }
+
+  const handleRandom = () => {
+    tempReducer({
+      type: 'preset-random'
+    });
+  }
+
+  const handleSun = () => {
+    tempReducer({
+      type: 'preset-sun'
+    });
+  }
+
   return (
     <div className="control-panel-container">
       <Container>
         <Row>
           <Col className="title"><strong>HeatSim!</strong></Col>
+        </Row>
+        <Row className="tutorial">
+          <Col><strong>Tutorial</strong>: Click on particle to set or fix temp.</Col>
         </Row>
         <Row className="option" style={{ marginBottom: 13 }}>
           <Col style={{ paddingTop: 5 }}>
@@ -105,10 +126,20 @@ export default function ControlPanel({ setScheme, scheme, tickspeed, setTickspee
             </Form>
           </Col>
         </Row>
-        <Row className="tutorial">
-          <Col><strong>Tutorial</strong>: Click on particle to set or fix temp.</Col>
+        <Row>
+          <Col className="preset-title">Presets</Col>
         </Row>
-
+        <Row className="justify-content-sm-center">
+          <Col className="text-center">
+            <Button variant="info" onClick={handleGradient}>Gradient</Button>
+          </Col>
+          <Col className="text-center">
+            <Button variant="light" onClick={handleRandom}>Random</Button>
+          </Col>
+          <Col className="text-center" onClick={handleSun}>
+            <Button variant="warning">&nbsp;&nbsp;Sun&nbsp;&nbsp;</Button>
+          </Col>
+        </Row>
       </Container>
 
     </div>

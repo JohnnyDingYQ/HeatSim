@@ -7,76 +7,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/ParticleGrid.css';
 
 
-export default function ParticleGrid(props) {
-  let WIDTH = 60;
-  let HEIGHT = 50;
+export default function ParticleGrid({scheme, temp, fixedTemp, height, width, setFixedTemp, tempReducer}) {
   // initialize individual particle size as state
   const [size, setSize] = useState(0);
-
-  let newTemp = [...Array(HEIGHT)].map(_ => Array(WIDTH).fill(0));
-
-  // initialize particle grid
-  let count = 0;
-  for (let i = 0; i < HEIGHT; i++) {
-    for (let j = 0; j < WIDTH; j++) {
-      // introduce gradient
-      newTemp[i][j] = 21 / HEIGHT / WIDTH * count;
-      count++;
-    }
-  }
-
-  // initialize particle temperature as 2D array (react state)
-  const [temp, setTemp] = useState(newTemp);
-  const [fixedTemp, setFixedTemp] = useState([...Array(HEIGHT)].map(_ => Array(WIDTH).fill(0)));
 
   // -1 means not particle is selected and the prompt/modal will not show
   const [selectedParticle, setSelectedParticle] = useState(-1);
   const [invalidTemp, setInvalidTemp] = useState(0);
 
-
-  function handleTimeTick() {
-    let newTemp = [...temp];
-    for (let i = 0; i < HEIGHT; i++) {
-      for (let j = 0; j < WIDTH; j++) {
-        let delta = 0;
-        if (i + 1 < HEIGHT) {
-          delta = props.heatConstant * (temp[i][j] - temp[i + 1][j]);
-          if (fixedTemp[i][j] != 1) {
-            newTemp[i][j] -= delta;
-          }
-          if (fixedTemp[i + 1][j] != 1) {
-            newTemp[i + 1][j] += delta;
-          }
-        }
-        if (j + 1 < WIDTH) {
-          delta = props.heatConstant * (temp[i][j] - temp[i][j + 1]);
-          if (fixedTemp[i][j] != 1) {
-            newTemp[i][j] -= delta;
-          }
-          if (fixedTemp[i][j + 1] != 1) {
-            newTemp[i][j + 1] += delta;
-          }
-        }
-      }
-    }
-    console.log(`Ticked with tickspeed ${props.tickspeed}`);
-    // console.log(fixedTemp);
-    setTemp(temp => newTemp);
-
-  }
-
   function handleResize() {
-    // setSize(size => Math.min(window.innerHeight / HEIGHT, (window.innerWidth-400) / WIDTH));
-    // 2
-    setSize(size => window.innerHeight / HEIGHT);
+    setSize(size => window.innerHeight / height);
   }
-
-  useEffect(() => {
-    const interval = setInterval(handleTimeTick, props.tickspeed);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [props.tickspeed, props.heatConstant]);
 
   useEffect(() => {
     // anoynomus function that handles particle alignment base on the resized browsefr window
@@ -87,13 +28,13 @@ export default function ParticleGrid(props) {
     };
   }, []);
 
-  let i = Math.floor(selectedParticle / WIDTH);
-  let j = selectedParticle % WIDTH;
+
 
   const modifyParticleTemp = (e) => {
     e.preventDefault()
+    let i = Math.floor(selectedParticle / width);
+    let j = selectedParticle % width;
     const input = Object.fromEntries((new FormData(e.target)).entries())
-    console.log(input);
     let target = Number(input.temp);
     if (target != '') {
       if (target < 0.0 || target > 21.0) {
@@ -102,7 +43,10 @@ export default function ParticleGrid(props) {
       }
       // newTemp = [...temp];
       temp[i][j] = target;
-      setTemp(temp => temp);
+      tempReducer({
+        type: 'replace',
+        newTemp: temp
+      })
     }
 
     if (typeof input.fix != "undefined") {
@@ -125,8 +69,8 @@ export default function ParticleGrid(props) {
     if (selectedParticle == -1) {
       return false;
     }
-    let i = Math.floor(selectedParticle / WIDTH);
-    let j = selectedParticle % WIDTH;
+    let i = Math.floor(selectedParticle / width);
+    let j = selectedParticle % width;
     let n = [...fixedTemp]
     if (fixedTemp[i][j] == 1) {
       return true;
@@ -160,17 +104,17 @@ export default function ParticleGrid(props) {
           </Form>
         </Modal.Body>
       </Modal>
-      <div className="particle-grid" style={{ height: size * HEIGHT, width: size * WIDTH + 10 }}>
+      <div className="particle-grid" style={{ height: size * height, width: size * width + 10 }}>
         {
           // Traverse through temp 2D array, inserting indiviual particles
-          [...Array(WIDTH * HEIGHT)].map(
+          [...Array(width * height)].map(
             (x, i) =>
               <Particle
                 size={size}
                 key={i}
-                temp={temp[Math.floor(i / WIDTH)][i % WIDTH]}
-                fixed={fixedTemp[Math.floor(i / WIDTH)][i % WIDTH] == 1 ? true : false}
-                scheme={props.scheme}
+                temp={temp[Math.floor(i / width)][i % width]}
+                fixed={fixedTemp[Math.floor(i / width)][i % width] == 1 ? true : false}
+                scheme={scheme}
                 selectParticle={() => selectParticle(i)}
               />
           )

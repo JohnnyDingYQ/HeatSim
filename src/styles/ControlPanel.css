@@ -35,4 +35,12 @@
   font-size: 11pt;
   color: gold;
   padding-left: 10px;
+  margin-bottom: 20px;
+}
+
+.preset-title {
+  color: white;
+  font-size: 14pt;
+  text-align: center;
+  margin-bottom: 10px;
 }
