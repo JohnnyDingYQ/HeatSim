@@ -9,13 +9,12 @@
   height: 10px;
   width: 10px;
   background-color: blueviolet;
+  display: flex;
 }
 
-.test {
-  max-width: 200px;
-}
-
-.test :hover{
-  cursor: pointer !important;
-  /* z-index: 50000 !important; */
+.particle img {
+  position: relative;
+  height: 10px;
+  width: 10px;
+  color: rgb(22, 22, 22)
 }

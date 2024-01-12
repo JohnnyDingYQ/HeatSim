@@ -87,13 +87,14 @@ export default function ParticleGrid(props) {
     };
   }, []);
 
+  let i = Math.floor(selectedParticle / WIDTH);
+  let j = selectedParticle % WIDTH;
+
   const modifyParticleTemp = (e) => {
     e.preventDefault()
     const input = Object.fromEntries((new FormData(e.target)).entries())
     console.log(input);
     let target = Number(input.temp);
-    let i = Math.floor(selectedParticle / WIDTH);
-    let j = selectedParticle % WIDTH;
     if (target != '') {
       if (target < 0.0 || target > 21.0) {
         setInvalidTemp(1);
@@ -120,6 +121,19 @@ export default function ParticleGrid(props) {
     setSelectedParticle(i);
   }
 
+  const setCheckboxValue = () => {
+    if (selectedParticle == -1) {
+      return false;
+    }
+    let i = Math.floor(selectedParticle / WIDTH);
+    let j = selectedParticle % WIDTH;
+    let n = [...fixedTemp]
+    if (fixedTemp[i][j] == 1) {
+      return true;
+    }
+    return false;
+  }
+
   return (
     <div className="particle-grid-container" >
       <Modal show={selectedParticle != -1}>
@@ -137,8 +151,8 @@ export default function ParticleGrid(props) {
                 Particle temp must be value between 0.0 and 21.0
               </Form.Text>
             </Form.Group>
-            <Form.Group className="mb-3 test" controlId="fixTemp">
-              <Form.Check name="fix" type="checkbox" label="Fix temp for this particle" />
+            <Form.Group className="mb-3 checkbox" controlId="fixTemp">
+              <Form.Check name="fix" type="checkbox" defaultChecked={setCheckboxValue()} label="Fix temp for this particle" />
             </Form.Group>
             <Button variant="primary" type="submit">
               Apply
@@ -155,6 +169,7 @@ export default function ParticleGrid(props) {
                 size={size}
                 key={i}
                 temp={temp[Math.floor(i / WIDTH)][i % WIDTH]}
+                fixed={fixedTemp[Math.floor(i / WIDTH)][i % WIDTH] == 1 ? true : false}
                 scheme={props.scheme}
                 selectParticle={() => selectParticle(i)}
               />

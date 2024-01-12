@@ -13,3 +13,12 @@
   flex-grow: 1;
   clip-path: inset( -100vw -100vw -100vw 0 );
 }
+
+.checkbox {
+  max-width: 200px;
+}
+
+.checkbox :hover{
+  cursor: pointer !important;
+  /* z-index: 50000 !important; */
+}
