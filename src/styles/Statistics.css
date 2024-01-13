@@ -1,0 +1,15 @@
+.stats .col {
+  color: white;
+  font-size: 11pt;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.stats .col p {
+  margin-bottom: 5px !important;
+}
+
+.stats .col span {
+  font-weight: bold;
+  font-size: 16px;
+}

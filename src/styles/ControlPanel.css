@@ -16,46 +16,8 @@
   padding-bottom: 20px;
 }
 
-.option {
-  color: white;
-  font-size: 11pt;
-  text-align: center;
-}
-
-.option button {
-  min-width: 206px;
-}
-
-.option small {
-  color: skyblue;
-  font-size: 9pt;
-}
-
 .tutorial {
   font-size: 11pt;
   color: gold;
   padding-left: 10px;
-}
-
-.section-title {
-  color: white;
-  font-size: 14pt;
-  text-align: center;
-  margin: 10px 0px;
-}
-
-.stats .col {
-  color: white;
-  font-size: 11pt;
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.stats .col p {
-  margin-bottom: 5px !important;
-}
-
-.stats .col span {
-  font-weight: bold;
-  font-size: 16px;
 }

@@ -4,6 +4,10 @@ import { useState, useEffect, useReducer } from 'react';
 
 import ParticleGrid from "../components/ParticleGrid.jsx";
 import ControlPanel from "../components/ControlPanel.jsx";
+import Configurations from '../components/Configurations.jsx'
+import Presets from '../components/Presets.jsx'
+import Statistics from '../components/Statistics.jsx'
+import ParticleSettings from '../components/ParticleSettings.jsx'
 
 import '../styles/index.css';
 
@@ -11,6 +15,7 @@ export default function MainContainer() {
   // initialize particle temperature as 2D array (react state)
   let WIDTH = 60;
   let HEIGHT = 50;
+  let MAX_TEMP = 21;
   let initialTemp = [...Array(HEIGHT)].map(_ => Array(WIDTH).fill(0));
 
   // initialize particle grid
@@ -29,18 +34,28 @@ export default function MainContainer() {
   const [heatConstant, setHeatConstant] = useState(0.1);
   const [tickElapsed, setTickElapsed] = useState(0);
 
+  // if not null stores a object {i: i index, j: j index, width: width}
+  // width is used to calculate particle number based on the i and j index
+  const [selectedParticle, setSelectedParticle] = useState(null);
+
+
   const tempReducerDispatch = (temp, action) => {
+    // modifying temp state directly and storing it right back might cause problem
+    // however, it surely saves space
     switch (action.type) {
       case 'replace': {
-        return action.newTemp;
+        temp = action.newTemp;
+        return temp;
+      }
+      case 'modify': {
+        temp[action.i][action.j] = action.newTemp;
+        return temp;
       }
       case 'preset-gradient': {
-        // modifying temp state directly and storing it right back might cause problem
-        // however, it surely saves space
         let count = 0;
         for (let i = 0; i < HEIGHT; i++) {
           for (let j = 0; j < WIDTH; j++) {
-            temp[i][j] = 21 / HEIGHT / WIDTH * count;
+            temp[i][j] = MAX_TEMP / HEIGHT / WIDTH * count;
             count++;
           }
         }
@@ -51,7 +66,7 @@ export default function MainContainer() {
       case 'preset-random': {
         for (let i = 0; i < HEIGHT; i++) {
           for (let j = 0; j < WIDTH; j++) {
-            temp[i][j] = Math.random() * 21;
+            temp[i][j] = Math.random() * MAX_TEMP;
           }
         }
         // remove all fixed temp
@@ -60,14 +75,14 @@ export default function MainContainer() {
       }
       case 'preset-sun': {
         temp = [...Array(HEIGHT)].map(_ => Array(WIDTH).fill(0));
-        let cx = Math.floor(WIDTH/2);
-        let cy = Math.floor(HEIGHT/2);
+        let cx = Math.floor(WIDTH / 2);
+        let cy = Math.floor(HEIGHT / 2);
         let sunRadius = 10;
         for (let i = -sunRadius; i <= sunRadius; i++) {
           for (let j = -sunRadius; j <= sunRadius; j++) {
-            if (Math.sqrt(i**2 + j**2) < sunRadius) {
-              temp[cy + i][cx + j] = 21;
-              fixedTemp[cy + i][cx + j]= 1;
+            if (Math.sqrt(i ** 2 + j ** 2) < sunRadius) {
+              temp[cy + i][cx + j] = MAX_TEMP;
+              fixedTemp[cy + i][cx + j] = 1;
             }
           }
         }
@@ -124,29 +139,34 @@ export default function MainContainer() {
 
   return (
     <div className="main-container">
-      <ControlPanel
-        scheme={scheme}
-        setScheme={setScheme}
-        tickspeed={tickspeed}
-        setTickspeed={setTickspeed}
-        heatConstant={heatConstant}
-        setHeatConstant={setHeatConstant}
-        temp={temp}
-        tempReducer={tempReducer}
-        tickElapsed={tickElapsed}
-        height={HEIGHT}
-        width={WIDTH}
-      />
+      <ControlPanel>
+        <Configurations
+          scheme={scheme}
+          setScheme={setScheme}
+          tickspeed={tickspeed}
+          setTickspeed={setTickspeed}
+          heatConstant={heatConstant}
+          setHeatConstant={setHeatConstant} />
+        <Presets tempReducer={tempReducer} />
+        <Statistics temp={temp} width={WIDTH} height={HEIGHT} tickElapsed={tickElapsed} />
+      </ControlPanel>
+
       <ParticleGrid
         scheme={scheme}
-        tickspeed={tickspeed}
-        heatConstant={heatConstant}
         temp={temp}
         fixedTemp={fixedTemp}
         height={HEIGHT}
         width={WIDTH}
-        setFixedTemp={setFixedTemp}
+        setSelectedParticle={setSelectedParticle}
+      />
+
+      {/* Floating Modal */}
+      <ParticleSettings
         tempReducer={tempReducer}
+        fixedTemp={fixedTemp}
+        setFixedTemp={setFixedTemp}
+        selectedParticle={selectedParticle}
+        setSelectedParticle={setSelectedParticle}
       />
     </div>
   )
