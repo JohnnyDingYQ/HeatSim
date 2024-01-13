@@ -5,12 +5,42 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import '../styles/ControlPanel.css';
 
-export default function ControlPanel({ setScheme, scheme, tickspeed, setTickspeed, heatConstant, setHeatConstant, tempReducer }) {
+export default function ControlPanel(
+  {
+    setScheme,
+    scheme,
+    tickspeed,
+    setTickspeed,
+    heatConstant,
+    setHeatConstant,
+    temp,
+    tempReducer,
+    height,
+    width,
+    tickElapsed
+  }
+) {
 
   const tickSpeedInput = useRef(null);
   const heatConstantInput = useRef(null);
   const [tickTooltipCode, setTickTooltipCode] = useState(0);
   const [heatConstantCode, setHeatConstantCode] = useState(0);
+
+  let sum = 0;
+  for (let i = 0; i < height; i++) {
+    for (let j = 0; j < width; j++) {
+      sum += temp[i][j];
+    }
+  }
+  let average = sum / height / width;
+
+  let sd = 0;
+  for (let i = 0; i < height; i++) {
+    for (let j = 0; j < width; j++) {
+      sd += (temp[i][j] - average) ** 2;
+    }
+  }
+  sd = Math.sqrt(sd / height / width);
 
   const handleGradient = () => {
     tempReducer({
@@ -38,6 +68,9 @@ export default function ControlPanel({ setScheme, scheme, tickspeed, setTickspee
         </Row>
         <Row className="tutorial">
           <Col><strong>Tutorial</strong>: Click on particle to set or fix temp.</Col>
+        </Row>
+        <Row>
+          <Col className="section-title">Configurations</Col>
         </Row>
         <Row className="option" style={{ marginBottom: 13 }}>
           <Col style={{ paddingTop: 5 }}>
@@ -71,7 +104,7 @@ export default function ControlPanel({ setScheme, scheme, tickspeed, setTickspee
                       setTickspeed(e.target.value);
                       setTickTooltipCode(1);
                       let id;
-                      id = setInterval(()=> {setTickTooltipCode(0); clearInterval(id)}, 2000);
+                      id = setInterval(() => { setTickTooltipCode(0); clearInterval(id) }, 2000);
                     }
                   }
                   defaultValue={tickspeed}
@@ -98,13 +131,13 @@ export default function ControlPanel({ setScheme, scheme, tickspeed, setTickspee
             <Form>
               <Form.Group className="mb-3">
                 <Form.Control
-                  ref = {heatConstantInput}
+                  ref={heatConstantInput}
                   onBlur={
                     (e) => {
                       setHeatConstant(e.target.value);
                       setHeatConstantCode(1);
                       let id;
-                      id = setInterval(()=> {setHeatConstantCode(0); clearInterval(id)}, 2000);
+                      id = setInterval(() => { setHeatConstantCode(0); clearInterval(id) }, 2000);
                     }
                   }
                   defaultValue={heatConstant}
@@ -119,15 +152,15 @@ export default function ControlPanel({ setScheme, scheme, tickspeed, setTickspee
                     </Tooltip>
                   )}
                 </Overlay>
-                <Form.Text id="k-warning">
-                  k over 0.7 can glitch the simulation
+                <Form.Text id="k-warning" style={{ textAlign: 'left' }}>
+                  Recommended k &lt; 0.25
                 </Form.Text>
               </Form.Group>
             </Form>
           </Col>
         </Row>
         <Row>
-          <Col className="preset-title">Presets</Col>
+          <Col className="section-title">Presets</Col>
         </Row>
         <Row className="justify-content-sm-center">
           <Col className="text-center">
@@ -138,6 +171,27 @@ export default function ControlPanel({ setScheme, scheme, tickspeed, setTickspee
           </Col>
           <Col className="text-center" onClick={handleSun}>
             <Button variant="warning">&nbsp;&nbsp;Sun&nbsp;&nbsp;</Button>
+          </Col>
+        </Row>
+        <Row>
+          <Col className="section-title" style={{ marginTop: 20 }}>Statistics</Col>
+        </Row>
+        <Row className="stats">
+          <Col>
+            <p>Average Temp:</p>
+            <span>{Math.round(average * 100) / 100}</span> </Col>
+          <Col>
+            <p>Standard Deviation:</p>
+            <span>{Math.round(sd * 100) / 100}</span></Col>
+        </Row>
+        <Row className="stats">
+          <Col>
+            <p>Temp Sum:</p>
+            <span>{Math.round(sum * 100) / 100}</span>
+          </Col>
+          <Col>
+            <p>Tick Elapsed:</p>
+            <span>{tickElapsed}</span>
           </Col>
         </Row>
       </Container>

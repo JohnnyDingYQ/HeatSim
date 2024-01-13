@@ -27,6 +27,7 @@ export default function MainContainer() {
   const [scheme, setScheme] = useState(2);
   const [tickspeed, setTickspeed] = useState(500);
   const [heatConstant, setHeatConstant] = useState(0.1);
+  const [tickElapsed, setTickElapsed] = useState(0);
 
   const tempReducerDispatch = (temp, action) => {
     switch (action.type) {
@@ -78,7 +79,9 @@ export default function MainContainer() {
 
   const [temp, tempReducer] = useReducer(tempReducerDispatch, initialTemp);
 
+
   const handleTimeTick = () => {
+    setTickElapsed(tickElapsed + 1);
     let newTemp = [...temp];
     for (let i = 0; i < HEIGHT; i++) {
       for (let j = 0; j < WIDTH; j++) {
@@ -104,7 +107,6 @@ export default function MainContainer() {
       }
     }
     console.log(`Ticked with tickspeed ${tickspeed}`);
-    // console.log(fixedTemp);
     tempReducer({
       type: 'replace',
       newTemp: newTemp
@@ -129,7 +131,11 @@ export default function MainContainer() {
         setTickspeed={setTickspeed}
         heatConstant={heatConstant}
         setHeatConstant={setHeatConstant}
+        temp={temp}
         tempReducer={tempReducer}
+        tickElapsed={tickElapsed}
+        height={HEIGHT}
+        width={WIDTH}
       />
       <ParticleGrid
         scheme={scheme}
