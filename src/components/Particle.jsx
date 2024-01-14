@@ -1,5 +1,4 @@
-import OverlayTrigger from 'react-bootstrap/cjs/OverlayTrigger.js';
-import Tooltip from 'react-bootstrap/cjs/Tooltip.js';
+import { OverlayTrigger, Tooltip } from "react-bootstrap"
 
 import '../styles/Particle.css';
 

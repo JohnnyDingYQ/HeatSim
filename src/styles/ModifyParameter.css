@@ -1,0 +1,18 @@
+.option {
+  color: white;
+  font-size: 11pt;
+  text-align: center;
+}
+
+.option button {
+  min-width: 206px;
+}
+
+.option small {
+  color: skyblue;
+  font-size: 9pt;
+}
+
+.option-title {
+  padding-top: 2px;
+}

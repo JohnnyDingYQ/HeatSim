@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useReducer } from 'react';
+import { Form } from "react-bootstrap"
 
 import ParticleGrid from "../components/ParticleGrid.jsx";
 import ControlPanel from "../components/ControlPanel.jsx";
@@ -8,6 +9,7 @@ import Configurations from '../components/Configurations.jsx'
 import Presets from '../components/Presets.jsx'
 import Statistics from '../components/Statistics.jsx'
 import ParticleSettings from '../components/ParticleSettings.jsx'
+import ModifyParameter from '../components/ModifyParameter.jsx'
 
 import '../styles/index.css';
 
@@ -32,6 +34,7 @@ export default function MainContainer() {
   const [scheme, setScheme] = useState(2);
   const [tickspeed, setTickspeed] = useState(500);
   const [heatConstant, setHeatConstant] = useState(0.1);
+  const [heatLoss, setHeatLoss] = useState(0);
   const [tickElapsed, setTickElapsed] = useState(0);
 
   // if not null stores a object {i: i index, j: j index, width: width}
@@ -100,6 +103,7 @@ export default function MainContainer() {
     let newTemp = [...temp];
     for (let i = 0; i < HEIGHT; i++) {
       for (let j = 0; j < WIDTH; j++) {
+        // Apply heat conduction
         let delta = 0;
         if (i + 1 < HEIGHT) {
           delta = heatConstant * (temp[i][j] - temp[i + 1][j]);
@@ -117,6 +121,13 @@ export default function MainContainer() {
           }
           if (fixedTemp[i][j + 1] != 1) {
             newTemp[i][j + 1] += delta;
+          }
+        }
+        // Apply heat loss if temp not fixed
+        if (fixedTemp[i][j] != 1) {
+          newTemp[i][j] -= heatLoss;
+          if (newTemp[i][j] < 0) {
+            newTemp[i][j] = 0;
           }
         }
       }
@@ -143,10 +154,15 @@ export default function MainContainer() {
         <Configurations
           scheme={scheme}
           setScheme={setScheme}
-          tickspeed={tickspeed}
-          setTickspeed={setTickspeed}
-          heatConstant={heatConstant}
-          setHeatConstant={setHeatConstant} />
+        >
+          <ModifyParameter name={'Tick Interval'} param={tickspeed} setParam={setTickspeed} />
+          <ModifyParameter name={'Heat Constant'} param={heatConstant} setParam={setHeatConstant}>
+            <Form.Text id="k-warning">
+              Recommended &lt; 0.25
+            </Form.Text>
+          </ModifyParameter>
+          <ModifyParameter name={'Heat Loss'} param={heatLoss} setParam={setHeatLoss} />
+        </Configurations>
         <Presets tempReducer={tempReducer} />
         <Statistics temp={temp} width={WIDTH} height={HEIGHT} tickElapsed={tickElapsed} />
       </ControlPanel>

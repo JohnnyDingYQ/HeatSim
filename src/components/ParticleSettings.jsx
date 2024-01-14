@@ -1,5 +1,6 @@
 import { Modal, Form, Button } from "react-bootstrap";
 import { useState } from 'react';
+
 import '../styles/ParticleSettings.css';
 
 export default function ParticleSettings({ tempReducer, fixedTemp, setFixedTemp, selectedParticle, setSelectedParticle }) {
