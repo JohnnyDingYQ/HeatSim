@@ -11,9 +11,10 @@ export default function ParticleSettings({ tempReducer, fixedTemp, setFixedTemp,
     e.preventDefault()
     let i = selectedParticle.i;
     let j = selectedParticle.j;
-    const input = Object.fromEntries((new FormData(e.target)).entries())
-    let target = Number(input.temp);
-    if (target != '') {
+    const input = Object.fromEntries((new FormData(e.target)).entries());
+    let target = input.temp;
+    if (target !== "") {
+      target = Number(target);
       if (target < 0.0 || target > 21.0) {
         setInvalidTemp(1);
         return;

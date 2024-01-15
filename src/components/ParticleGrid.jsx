@@ -39,7 +39,7 @@ export default function ParticleGrid({ scheme, temp, fixedTemp, height, width, s
               return (
                 <Particle
                   size={size}
-                  key={i}
+                  key={index}
                   temp={temp[i][j]}
                   fixed={fixedTemp[i][j] == 1 ? true : false}
                   scheme={scheme}
