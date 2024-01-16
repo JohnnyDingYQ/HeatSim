@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect, useReducer } from 'react';
-import { Form } from "react-bootstrap"
 
+import Introduction from '../components/Introduction.jsx';
 import ParticleGrid from "../components/ParticleGrid.jsx";
 import ControlPanel from "../components/ControlPanel.jsx";
 import Configurations from '../components/Configurations.jsx'
@@ -36,6 +36,7 @@ export default function MainContainer() {
   const [heatConstant, setHeatConstant] = useState(0.1);
   const [heatLoss, setHeatLoss] = useState(0);
   const [tickElapsed, setTickElapsed] = useState(0);
+  const [showIntroduction, setShowIntroduction] = useState(0);
 
   // if not null stores a object {i: i index, j: j index, width: width}
   // width is used to calculate particle number based on the i and j index
@@ -140,6 +141,15 @@ export default function MainContainer() {
 
   }
 
+  // To avoid client server html mismatch when rendering introduction modal
+  useEffect(() => {
+    const set = setInterval(() => { setShowIntroduction(1); clearInterval(set) }, 10);
+    return () => {
+      clearInterval(set);
+    };
+  }, []);
+
+  // Simulation ticks here
   useEffect(() => {
     const interval = setInterval(handleTimeTick, tickspeed);
     return () => {
@@ -147,43 +157,50 @@ export default function MainContainer() {
     };
   }, [tickspeed, heatConstant, temp]);
 
-
   return (
-    <div className="main-container">
-      <ControlPanel>
-        <Configurations
+    <>
+      {/* <Introduction show={showIntroduction} /> */}
+      <div className="main-container">
+        <ControlPanel>
+          <Configurations
+            scheme={scheme}
+            setScheme={setScheme}
+          >
+            <ModifyParameter name={'Tick Interval'} param={tickspeed} setParam={setTickspeed}>
+              Milliseconds between each simulation step. Recommended value between 50 and 1000.
+              Simulation rate is capped by the performance of my code and your browser.
+            </ModifyParameter>
+            <ModifyParameter name={'Heat Constant'} param={heatConstant} setParam={setHeatConstant}>
+              Determines how fast heat flows between particles. Recommended value is less than 0.25.
+              Small heat constant and tick interval work best together.
+            </ModifyParameter>
+            <ModifyParameter name={'Heat Loss'} param={heatLoss} setParam={setHeatLoss}>
+              Heat loss of each particle per tick. Note that the range of temperature of particles is 0 to 21,
+              so choose wisely, taking the tick interval into consideration.
+            </ModifyParameter>
+          </Configurations>
+          <Presets tempReducer={tempReducer} />
+          <Statistics temp={temp} width={WIDTH} height={HEIGHT} tickElapsed={tickElapsed} />
+        </ControlPanel>
+
+        <ParticleGrid
           scheme={scheme}
-          setScheme={setScheme}
-        >
-          <ModifyParameter name={'Tick Interval'} param={tickspeed} setParam={setTickspeed} />
-          <ModifyParameter name={'Heat Constant'} param={heatConstant} setParam={setHeatConstant}>
-            <Form.Text id="k-warning">
-              Recommended &lt; 0.25
-            </Form.Text>
-          </ModifyParameter>
-          <ModifyParameter name={'Heat Loss'} param={heatLoss} setParam={setHeatLoss} />
-        </Configurations>
-        <Presets tempReducer={tempReducer} />
-        <Statistics temp={temp} width={WIDTH} height={HEIGHT} tickElapsed={tickElapsed} />
-      </ControlPanel>
+          temp={temp}
+          fixedTemp={fixedTemp}
+          height={HEIGHT}
+          width={WIDTH}
+          setSelectedParticle={setSelectedParticle}
+        />
 
-      <ParticleGrid
-        scheme={scheme}
-        temp={temp}
-        fixedTemp={fixedTemp}
-        height={HEIGHT}
-        width={WIDTH}
-        setSelectedParticle={setSelectedParticle}
-      />
-
-      {/* Floating Modal */}
-      <ParticleSettings
-        tempReducer={tempReducer}
-        fixedTemp={fixedTemp}
-        setFixedTemp={setFixedTemp}
-        selectedParticle={selectedParticle}
-        setSelectedParticle={setSelectedParticle}
-      />
-    </div>
+        {/* Floating Modal */}
+        <ParticleSettings
+          tempReducer={tempReducer}
+          fixedTemp={fixedTemp}
+          setFixedTemp={setFixedTemp}
+          selectedParticle={selectedParticle}
+          setSelectedParticle={setSelectedParticle}
+        />
+      </div>
+    </>
   )
 }

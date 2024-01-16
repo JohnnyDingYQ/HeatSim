@@ -61,11 +61,11 @@ export default function ParticleSettings({ tempReducer, fixedTemp, setFixedTemp,
           <Form.Group className="mb-3">
             <Form.Label>Particle Temperature</Form.Label>
             <Form.Control name="temp" type="number" placeholder="Enter Temp" />
-            <Form.Text style={{ paddingLeft: 4, color: invalidTemp === 0 ? 'rgba(33, 37, 41, 0.75)' : 'red' }}>
+            <Form.Text className="notice" style={{ color: invalidTemp === 0 ? 'rgba(33, 37, 41, 0.75)' : 'red' }}>
               Particle temp must be value between 0.0 and 21.0
             </Form.Text>
           </Form.Group>
-          <Form.Group className="mb-3 checkbox" controlId="fixTemp">
+          <Form.Group className="mb-3 checkbox">
             <Form.Check name="fix" type="checkbox" defaultChecked={setCheckboxValue()} label="Fix temp for this particle" />
           </Form.Group>
           <Button variant="primary" type="submit">

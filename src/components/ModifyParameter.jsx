@@ -6,7 +6,8 @@ import '../styles/ModifyParameter.css';
 export default function ModifyParameter({ name, param, setParam, children }) {
 
   const input = useRef(null);
-  const [showTooltip, setShowTooltip] = useState(0);
+  const [showTutorial, setShowTutorial] = useState(0);
+  const [success, setSuccess] = useState(0);
 
   return (
     <Row className="option">
@@ -18,13 +19,15 @@ export default function ModifyParameter({ name, param, setParam, children }) {
           <Form.Group className="mb-3">
             <Form.Control
               ref={input}
+              onFocus={() => setShowTutorial(1)}
               onBlur=
               {
                 (e) => {
+                  setShowTutorial(0);
                   setParam(e.target.value);
-                  setShowTooltip(1);
+                  setSuccess(1);
                   let id;
-                  id = setInterval(() => { setShowTooltip(0); clearInterval(id) }, 2000);
+                  id = setInterval(() => { setSuccess(0); clearInterval(id) }, 2000);
                 }
               }
               defaultValue={param}
@@ -32,14 +35,20 @@ export default function ModifyParameter({ name, param, setParam, children }) {
               type="number"
               placeholder="ms"
             />
-            <Overlay target={input.current} show={showTooltip} placement="right">
+            <Overlay target={input.current} show={success} placement="right">
               {(props) => (
-                <Tooltip id={`${name}-tooltip`} {...props}>
+                <Tooltip className="success" id={`${name}-success`} {...props}>
                   {name} set to {param}
                 </Tooltip>
               )}
             </Overlay>
-            {children}
+            <Overlay target={input.current} show={showTutorial} placement="right">
+              {(props) => (
+                <Tooltip className="tutorial" id={`${name}-tutorial`} {...props}>
+                  {children}
+                </Tooltip>
+              )}
+            </Overlay>
           </Form.Group>
         </Form>
       </Col>
