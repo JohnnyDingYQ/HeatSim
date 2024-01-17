@@ -143,7 +143,7 @@ export default function MainContainer() {
 
   // To avoid client server html mismatch when rendering introduction modal
   useEffect(() => {
-    const set = setInterval(() => { setShowWelcome(1); clearInterval(set) }, 2000);
+    const set = setInterval(() => { setShowWelcome(1); clearInterval(set) }, 100);
     return () => {
       clearInterval(set);
     };

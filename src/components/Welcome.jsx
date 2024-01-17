@@ -4,6 +4,7 @@ import { useState } from 'react';
 import '../styles/Welcome.css';
 
 import Introduction from "./introduction_tabs/Introduction";
+import Tutorial from "./introduction_tabs/Tutorial";
 import TechStack from "./introduction_tabs/TechStack";
 
 export default function Welcome({ show, setShowWelcome }) {
@@ -35,6 +36,10 @@ export default function Welcome({ show, setShowWelcome }) {
         return (
           <TechStack />
         );
+      case "tutorial":
+        return (
+          <Tutorial />
+        );
     }
   };
 
@@ -50,9 +55,9 @@ export default function Welcome({ show, setShowWelcome }) {
           <Nav.Item>
             <Nav.Link eventKey="introduction">Introduction</Nav.Link>
           </Nav.Item>
-          {/* <Nav.Item>
+          <Nav.Item>
             <Nav.Link eventKey="tutorial">Tutorial</Nav.Link>
-          </Nav.Item> */}
+          </Nav.Item>
           <Nav.Item>
             <Nav.Link eventKey="tech-stack">Tech Stack</Nav.Link>
           </Nav.Item>
