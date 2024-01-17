@@ -1,0 +1,26 @@
+.tab-container {
+  padding: 25px 40px;
+}
+
+.close-welcome {
+  display: flex;
+  flex-flow: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.close-welcome lb {
+  width: 100%;
+}
+
+.close-welcome form{
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.button-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}

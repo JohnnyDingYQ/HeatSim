@@ -1,8 +1,8 @@
 import { Col, Row } from "react-bootstrap"
 
-import ControlGroupTitle from '../components/ControlGroupTitle.jsx'
+import ControlGroupTitle from '../ControlGroupTitle.jsx'
 
-import '../styles/Statistics.css';
+import '@/styles/Statistics.css';
 
 export default function Statistics({ temp, height, width, tickElapsed }) {
 

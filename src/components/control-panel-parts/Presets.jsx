@@ -1,8 +1,8 @@
 import { Col, Row, Button } from "react-bootstrap"
 
-import ControlGroupTitle from '../components/ControlGroupTitle.jsx'
+import ControlGroupTitle from '../ControlGroupTitle.jsx'
 
-import '../styles/Presets.css';
+import '@/styles/Presets.css';
 
 export default function Presets({ tempReducer }) {
 

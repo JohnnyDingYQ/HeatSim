@@ -1,8 +1,8 @@
 import { Col, Row, Dropdown } from "react-bootstrap"
 
-import ControlGroupTitle from '../components/ControlGroupTitle.jsx'
+import ControlGroupTitle from '../ControlGroupTitle.jsx'
 
-import '../styles/Configurations.css';
+import "@/styles/Configurations.css"
 
 export default function Configurations({ scheme, setScheme, children }) {
 

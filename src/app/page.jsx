@@ -2,12 +2,12 @@
 
 import { useState, useEffect, useReducer } from 'react';
 
-import Introduction from '../components/Introduction.jsx';
+import Welcome from '../components/Welcome.jsx';
 import ParticleGrid from "../components/ParticleGrid.jsx";
 import ControlPanel from "../components/ControlPanel.jsx";
-import Configurations from '../components/Configurations.jsx'
-import Presets from '../components/Presets.jsx'
-import Statistics from '../components/Statistics.jsx'
+import Configurations from '../components/control-panel-parts/Configurations.jsx'
+import Presets from '../components/control-panel-parts/Presets.jsx'
+import Statistics from '../components/control-panel-parts/Statistics.jsx'
 import ParticleSettings from '../components/ParticleSettings.jsx'
 import ModifyParameter from '../components/ModifyParameter.jsx'
 
@@ -36,7 +36,7 @@ export default function MainContainer() {
   const [heatConstant, setHeatConstant] = useState(0.1);
   const [heatLoss, setHeatLoss] = useState(0);
   const [tickElapsed, setTickElapsed] = useState(0);
-  const [showIntroduction, setShowIntroduction] = useState(0);
+  const [showWelcome, setShowWelcome] = useState(0);
 
   // if not null stores a object {i: i index, j: j index, width: width}
   // width is used to calculate particle number based on the i and j index
@@ -143,7 +143,7 @@ export default function MainContainer() {
 
   // To avoid client server html mismatch when rendering introduction modal
   useEffect(() => {
-    const set = setInterval(() => { setShowIntroduction(1); clearInterval(set) }, 10);
+    const set = setInterval(() => { setShowWelcome(1); clearInterval(set) }, 2000);
     return () => {
       clearInterval(set);
     };
@@ -159,7 +159,7 @@ export default function MainContainer() {
 
   return (
     <>
-      {/* <Introduction show={showIntroduction} /> */}
+      <Welcome show={showWelcome} setShowWelcome={setShowWelcome} />
       <div className="main-container">
         <ControlPanel>
           <Configurations
